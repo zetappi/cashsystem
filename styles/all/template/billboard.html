@@ -1,0 +1,54 @@
+{% include 'overall_header.html' %}
+
+<h2>{{ lang('CASH_BILLBOARD') }}</h2>
+
+<div class="panel">
+    <div class="inner">
+        {% if CASH_USER_POINTS %}
+            <p>{{ lang('CASH_YOUR_POINTS') }}: <strong>{{ CASH_USER_POINTS }}</strong></p>
+        {% endif %}
+        
+        {% if TOTAL_USERS %}
+            <div class="action-bar top">
+                <div class="pagination">
+                    {{ TOTAL_USERS }} {{ lang('USERS') }}
+                    {% if PAGINATION %} &bull; {{ PAGE_NUMBER }} &bull; <span>{{ PAGINATION }}</span>{% endif %}
+                </div>
+            </div>
+            
+            <table class="table1">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">{{ lang('CASH_RANK') }}</th>
+                        <th style="width: 60%;">{{ lang('CASH_USERNAME') }}</th>
+                        <th style="width: 30%;">{{ lang('CASH_POINTS') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in loops.users %}
+                        <tr class="{% if loop.index is odd %}bg1{% else %}bg2{% endif %}">
+                            <td>{{ user.RANK }}</td>
+                            <td>{{ user.USERNAME }}</td>
+                            <td>{{ user.POINTS }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="action-bar bottom">
+                <div class="pagination">
+                    {{ TOTAL_USERS }} {{ lang('USERS') }}
+                    {% if PAGINATION %} &bull; {{ PAGE_NUMBER }} &bull; <span>{{ PAGINATION }}</span>{% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="panel">
+                <div class="inner">
+                    <strong>{{ lang('CASH_NO_USERS') }}</strong>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% include 'overall_footer.html' %}

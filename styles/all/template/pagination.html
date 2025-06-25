@@ -1,0 +1,35 @@
+{% if TOTAL_PAGES > 1 %}
+<div class="pagination">
+    <ul>
+        {% if CURRENT_PAGE > 1 %}
+            <li class="arrow previous"><a href="{{ U_PREVIOUS_PAGE }}" rel="prev" role="button">{{ lang('PREVIOUS') }}</a></li>
+        {% endif %}
+        
+        {% if CURRENT_PAGE > 3 %}
+            <li><a href="{{ BASE_URL }}" role="button">1</a></li>
+            {% if CURRENT_PAGE > 4 %}
+                <li class="ellipsis" role="separator"><span>…</span></li>
+            {% endif %}
+        {% endif %}
+        
+        {% for p in range(max(1, CURRENT_PAGE - 2), min(TOTAL_PAGES, CURRENT_PAGE + 2)) %}
+            {% if p == CURRENT_PAGE %}
+                <li class="active"><span>{{ p }}</span></li>
+            {% else %}
+                <li><a href="{{ BASE_URL }}{% if p > 1 %}&start={{ (p - 1) * 25 }}{% endif %}" role="button">{{ p }}</a></li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if CURRENT_PAGE < TOTAL_PAGES - 2 %}
+            {% if CURRENT_PAGE < TOTAL_PAGES - 3 %}
+                <li class="ellipsis" role="separator"><span>…</span></li>
+            {% endif %}
+            <li><a href="{{ BASE_URL }}&start={{ (TOTAL_PAGES - 1) * 25 }}" role="button">{{ TOTAL_PAGES }}</a></li>
+        {% endif %}
+        
+        {% if CURRENT_PAGE < TOTAL_PAGES %}
+            <li class="arrow next"><a href="{{ U_NEXT_PAGE }}" rel="next" role="button">{{ lang('NEXT') }}</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}

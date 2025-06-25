@@ -1,0 +1,8 @@
+marcozp_cash_billboard:
+    path: /cash/billboard
+    defaults: { _controller: marcozp.cash.controller.billboard:display }
+
+marcozp_cash_testapi:
+    path: /cash/testapi
+    defaults: { _controller: marcozp.cash.controller.test_controller:handle }
+    methods: [GET, POST]

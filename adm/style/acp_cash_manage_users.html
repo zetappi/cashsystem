@@ -1,0 +1,205 @@
+{% include 'overall_header.html' %}
+
+<h1>{{ lang('ACP_CASH_MANAGE_USERS') }}</h1>
+<p>{{ lang('ACP_CASH_MANAGE_USERS_EXPLAIN') }}</p>
+
+<form id="acp_cash_manage_users" method="post" action="{{ U_ACTION }}">
+    <fieldset>
+        <legend>{{ lang('ACP_CASH_MANAGE_USER_POINTS') }}</legend>
+        
+        <dl>
+            <dt><label for="username">{{ lang('USERNAME') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CASH_MANAGE_USER_NAME_EXPLAIN') }}</span></dt>
+            <dd>
+                <input type="text" id="username" name="username" value="" class="inputbox autowidth">
+                <span>[ <a href="{{ U_FIND_USERNAME }}" onclick="find_username(this.href); return false;">{{ lang('FIND_USERNAME') }}</a> ]</span>
+            </dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="points">{{ lang('ACP_CASH_POINTS_AMOUNT') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CASH_POINTS_AMOUNT_EXPLAIN') }}</span></dt>
+            <dd><input type="number" min="1" id="points" name="points" value="0"></dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="action">{{ lang('ACP_CASH_POINTS_ACTION') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CASH_POINTS_ACTION_EXPLAIN') }}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="action_add" name="action" value="add" checked="checked"> {{ lang('ACP_CASH_POINTS_ADD') }}</label>
+                <label><input type="radio" class="radio" id="action_subtract" name="action" value="subtract"> {{ lang('ACP_CASH_POINTS_SUBTRACT') }}</label>
+            </dd>
+        </dl>
+        
+        <dl>
+            <dt><label for="reason">{{ lang('ACP_CASH_POINTS_REASON') }}{{ lang('COLON') }}</label><br><span>{{ lang('ACP_CASH_POINTS_REASON_EXPLAIN') }}</span></dt>
+            <dd><input type="text" id="reason" name="reason" value="" class="inputbox" size="40"></dd>
+        </dl>
+    </fieldset>
+    
+    <fieldset class="submit-buttons">
+        
+        <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+        <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+        {{ S_FORM_TOKEN }}
+    </fieldset>
+</form>
+
+{% if TOP_USERS %}
+<br>
+<fieldset>
+    <legend>{{ lang('ACP_CASH_TOP_USERS') }}</legend>
+    <div class="table-wrapper">
+        <table class="table1">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{{ lang('USERNAME') }}</th>
+                    <th>{{ lang('POINTS') }}</th>
+                    <th>{{ lang('ACTIONS') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in TOP_USERS %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ user.USERNAME_FULL }}</td>
+                    <td>{{ user.POINTS|number_format(0) }}</td>
+                    <td><a href="#" class="edit-points" data-username="{{ user.USERNAME }}" title="{{ lang('EDIT_POINTS') }}"><i class="icon fa fa-money fa-lg" style="color: #5cb85c;"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if PAGINATION %}
+        <div class="pagination" style="margin-top: 10px;">
+            {% if U_PREV_PAGE %}
+                <a href="{{ U_PREV_PAGE }}" class="button2">&laquo; {{ lang('PREVIOUS') }}</a>
+            {% else %}
+                <span class="button2 button-disabled">&laquo; {{ lang('PREVIOUS') }}</span>
+            {% endif %}
+            
+            <span style="margin: 0 10px;">{{ lang('PAGE_OF', CURRENT_PAGE, TOTAL_PAGES) }}</span>
+            
+            {% if U_NEXT_PAGE %}
+                <a href="{{ U_NEXT_PAGE }}" class="button2">{{ lang('NEXT') }} &raquo;</a>
+            {% else %}
+                <span class="button2 button-disabled">{{ lang('NEXT') }} &raquo;</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</fieldset>
+{% endif %}
+
+<style>
+/* Stile per la tabella della classifica */
+.table-wrapper {
+    width: 50%;
+    margin: 10px 0;
+}
+
+.table1 {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.95em;
+}
+
+.table1 th, .table1 td {
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #e8e8e8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table1 th {
+    background-color: #eef1f5;
+    color: #333;
+    font-weight: bold;
+    border-bottom: 2px solid #d8d8d8;
+}
+
+/* Larghezze colonne */
+.table1 th:nth-child(1), .table1 td:nth-child(1) {  /* # */
+    width: 40px;
+    text-align: center;
+}
+
+.table1 th:nth-child(2), .table1 td:nth-child(2) {  /* Username */
+    max-width: 30ch;
+    width: 50%;
+}
+
+.table1 th:nth-child(3), .table1 td:nth-child(3) {  /* Punti */
+    width: 100px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.table1 th:nth-child(4), .table1 td:nth-child(4) {  /* Azioni */
+    width: 60px;
+    text-align: center;
+}
+
+/* Stile per le righe alternate */
+.table1 tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.table1 tbody tr:nth-child(even) {
+    background-color: #f0f4f8;
+}
+
+/* Stile per il passaggio del mouse */
+.table1 tbody tr:hover {
+    background-color: #e8f0f7;
+}
+
+/* Stile per l'icona di modifica punti */
+.edit-points {
+    display: inline-block;
+    padding: 4px;
+    transition: all 0.2s ease-in-out;
+    color: #5cb85c;
+}
+
+.edit-points:hover {
+    transform: scale(1.2);
+    opacity: 0.8;
+    text-decoration: none;
+}
+</style>
+
+{% include 'overall_footer.html' %}
+
+<script type="text/javascript">
+// <![CDATA[
+    document.addEventListener('DOMContentLoaded', function() {
+        // Aggiungi gestore eventi per i pulsanti di modifica punti
+        document.querySelectorAll('.edit-points').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const username = this.getAttribute('data-username');
+                
+                // Imposta il nome utente nel campo di input
+                document.getElementById('username').value = username;
+                
+                // Scorri fino al form
+                document.getElementById('username').focus();
+                
+                // Evidenzia il campo per maggiore visibilità
+                const input = document.getElementById('username');
+                input.style.border = '1px solid #007c00';
+                input.style.boxShadow = '0 0 5px rgba(0, 124, 0, 0.5)';
+                
+                // Rimuovi l'evidenziazione dopo 2 secondi
+                setTimeout(function() {
+                    input.style.border = '';
+                    input.style.boxShadow = '';
+                }, 2000);
+            });
+        });
+    });
+// ]]>
+</script>

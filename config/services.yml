@@ -1,0 +1,80 @@
+services:
+    marcozp.cash.listener:
+        class: marcozp\cash\event\main_listener
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@request'
+            - '@auth'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%core.table_prefix%'
+            - '@marcozp.cash.points_manager'
+        tags:
+            - { name: event.listener }
+    
+    marcozp.cash.points_manager:
+        class: marcozp\cash\service\points_manager
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '%core.table_prefix%'
+    
+    marcozp.cash.controller.acp:
+        class: marcozp\cash\controller\acp_controller
+        arguments:
+            - '@config'
+            - '@template'
+            - '@user'
+            - '@request'
+            - '@dbal.conn'
+            - '@language'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+            - '@marcozp.cash.points_manager'
+    
+    marcozp.cash.controller.billboard:
+        class: marcozp\cash\controller\billboard_controller
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@language'
+            - '@auth'
+            - '@request'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+            - '@marcozp.cash.points_manager'
+
+    # Servizio API Punti
+    marcozp.cash.api.points:
+        class: marcozp\cash\service\api\ApiManager
+        arguments:
+            - '@marcozp.cash.points_manager'
+            - '@auth'
+            - '@user'
+            - '@dbal.conn'
+            - '%core.table_prefix%users'
+        public: true
+
+    # Controller per il test API
+    marcozp.cash.controller.test_controller:
+        class: marcozp\cash\controller\test_controller
+        arguments:
+            - '@auth'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@controller.helper'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+        public: true

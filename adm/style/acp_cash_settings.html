@@ -1,0 +1,56 @@
+{% include 'overall_header.html' %}
+
+<h1>{{ lang('ACP_CASH_SETTINGS') }}</h1>
+<p>{{ lang('ACP_CASH_SETTINGS_EXPLAIN') }}</p>
+
+<form id="acp_cash" method="post" action="{{ U_ACTION }}">
+    <fieldset>
+        <legend>{{ lang('SETTINGS') }}</legend>
+        <dl>
+            <dt><label for="points_per_post">{{ lang('CASH_POINTS_PER_POST') }}{{ lang('COLON') }}</label><br><span>{{ lang('CASH_POINTS_PER_POST_EXPLAIN') }}</span></dt>
+            <dd><input type="number" min="0" id="points_per_post" name="points_per_post" value="{{ POINTS_PER_POST }}"></dd>
+        </dl>
+        <dl>
+            <dt><label for="points_per_topic">{{ lang('CASH_POINTS_PER_TOPIC') }}{{ lang('COLON') }}</label><br><span>{{ lang('CASH_POINTS_PER_TOPIC_EXPLAIN') }}</span></dt>
+            <dd><input type="number" min="0" id="points_per_topic" name="points_per_topic" value="{{ POINTS_PER_TOPIC }}"></dd>
+        </dl>
+        <dl>
+            <dt><label for="points_per_poll_vote">{{ lang('CASH_POINTS_PER_POLL_VOTE') }}{{ lang('COLON') }}</label><br><span>{{ lang('CASH_POINTS_PER_POLL_VOTE_EXPLAIN') }}</span></dt>
+            <dd><input type="number" min="0" id="points_per_poll_vote" name="points_per_poll_vote" value="{{ POINTS_PER_POLL_VOTE }}"></dd>
+        </dl>
+        <dl>
+            <dt><label for="points_per_page_view">{{ lang('CASH_POINTS_PER_PAGE_VIEW') }}{{ lang('COLON') }}</label><br><span>{{ lang('CASH_POINTS_PER_PAGE_VIEW_EXPLAIN') }}</span></dt>
+            <dd><input type="number" min="0" id="points_per_page_view" name="points_per_page_view" value="{{ POINTS_PER_PAGE_VIEW }}"></dd>
+        </dl>
+        <dl>
+            <dt><label for="max_daily_points">{{ lang('CASH_MAX_DAILY_POINTS') }}{{ lang('COLON') }}</label><br><span>{{ lang('CASH_MAX_DAILY_POINTS_EXPLAIN') }}</span></dt>
+            <dd><input type="number" min="0" id="max_daily_points" name="max_daily_points" value="{{ MAX_DAILY_POINTS }}"></dd>
+        </dl>
+        <dl>
+            <dt><label for="show_billboard_link">{{ lang('CASH_SHOW_BILLBOARD_LINK') }}{{ lang('COLON') }}</label><br><span>{{ lang('CASH_SHOW_BILLBOARD_LINK_EXPLAIN') }}</span></dt>
+            <dd>
+                <label><input type="radio" class="radio" id="show_billboard_link_1" name="show_billboard_link" value="1"{% if SHOW_BILLBOARD_LINK %} checked="checked"{% endif %}> {{ lang('YES') }}</label>
+                <label><input type="radio" class="radio" id="show_billboard_link_0" name="show_billboard_link" value="0"{% if not SHOW_BILLBOARD_LINK %} checked="checked"{% endif %}> {{ lang('NO') }}</label>
+            </dd>
+        </dl>
+    </fieldset>
+    
+    <fieldset class="submit-buttons">
+        <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+        <input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+        {{ S_FORM_TOKEN }}
+    </fieldset>
+</form>
+
+<form id="reset_points_form" method="post" action="{{ U_ACTION }}">
+    <fieldset>
+        <legend>{{ lang('CASH_RESET_POINTS') }}</legend>
+        <p>{{ lang('CASH_RESET_POINTS_EXPLAIN') }}</p>
+        <p class="submit-buttons">
+            <input class="button1" type="submit" id="reset_points" name="reset_points" value="{{ lang('CASH_RESET_POINTS') }}" />
+            {{ S_FORM_TOKEN }}
+        </p>
+    </fieldset>
+</form>
+
+{% include 'overall_footer.html' %}
